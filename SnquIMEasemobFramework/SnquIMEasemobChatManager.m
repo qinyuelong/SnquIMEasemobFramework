@@ -11,9 +11,31 @@
 #import "SnquIMEasemobUtils.h"
 #import "SnquIMEasemobMessageManager.h"
 
+
+@interface  SnquIMEasemobChatManager()<EMChatManagerDelegate>
+@property (nonatomic, strong) SnquIMEasemobMessageManager *messageManager;
+
+@end
+
+
 @implementation SnquIMEasemobChatManager
 
 
+-(instancetype)initWithConversationId:(NSString *)conversationId{
+    self = [super init];
+    if (self) {
+        [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+        [self getConversationWithUser:conversationId];
+        self.messageManager = [[SnquIMEasemobMessageManager alloc] initWithConversationId:conversationId];
+    }
+    return self;
+}
+
+
+
+-(void)removeDelegate{
+    [[EMClient sharedClient].chatManager removeDelegate:self];
+}
 
 -(SnquIMEasemobConversation *)getConversationWithUser:(NSString *)userId{
     SnquIMEasemobConversation  *converstation = (SnquIMEasemobConversation *)[[EMClient sharedClient].chatManager getConversation:userId type:EMConversationTypeChat createIfNotExist:YES];
@@ -53,13 +75,71 @@
 
 
 -(void)sendTextMessage:(NSString *)messageText progress:(void (^)(int progress))aProgressBlock
-            completion:(void (^)(NSString *message, NSError *error))aCompletionBlock{
+            completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock{
     
-    EMMessage *message = nil;
+    EMMessage *message = [self.messageManager convertMessageTextToEMMessage:messageText];
     [[EMClient sharedClient].chatManager sendMessage:message progress:aProgressBlock completion:^(EMMessage *message, EMError *error) {
-        
+        if (completionBlock) {
+            NSError *e = [SnquIMEasemobUtils convertEMErrorToNSError:error];
+            completionBlock((SnquIMEasemobMessage *)message, e);
+        }
     }];
-    
 }
+
+-(void)sendImageMessage:(NSData *)imageData imageName:(NSString *)imageName progress:(void (^)(int progress))aProgressBlock
+             completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock{
+    EMMessage *message = [self.messageManager convertImageMessageToEMMessage:imageData displayName:imageName];
+    [[EMClient sharedClient].chatManager sendMessage:message progress:aProgressBlock completion:^(EMMessage *message, EMError *error) {
+        if (completionBlock) {
+            NSError *e = [SnquIMEasemobUtils convertEMErrorToNSError:error];
+            completionBlock((SnquIMEasemobMessage *)message, e);
+        }
+    }];
+}
+
+-(void)sendMessageReadAck:(SnquIMEasemobMessage *)message completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock{
+    [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:^(EMMessage *aMessage, EMError *aError) {
+        if (completionBlock) {
+            NSError *error = [SnquIMEasemobUtils convertEMErrorToNSError:aError];
+            completionBlock((SnquIMEasemobMessage *)aMessage, error);
+        }
+    }];
+}
+
+#pragma mark - EMChatManagerDelegate
+
+
+// 在线普通消息会走以下回调：
+
+
+- (void)messagesDidReceive:(NSArray<SnquIMEasemobMessage *> *)aMessages{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(messagesDidReceive:)]) {
+        [self.delegate messagesDidReceive:aMessages];
+    }
+}
+
+// 透传(cmd)在线消息会走以下回调:
+
+
+- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(cmdMessagesDidReceive:)]) {
+        [self.delegate cmdMessagesDidReceive:aCmdMessages];
+    }
+}
+
+// 消息已送达回执
+-(void)messagesDidDeliver:(NSArray<SnquIMEasemobMessage *> *)aMessages{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(cmdMessagesDidReceive:)]) {
+        [self.delegate messagesDidDeliver:aMessages];
+    }
+}
+
+// 接收已读回执
+-(void)messagesDidRead:(NSArray<SnquIMEasemobMessage *> *)aMessages{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(messagesDidRead:)]) {
+        [self.delegate messagesDidRead:aMessages];
+    }
+}
+
 
 @end

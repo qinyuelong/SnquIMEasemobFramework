@@ -20,6 +20,8 @@ FOUNDATION_EXPORT const unsigned char SnquIMEasemobFrameworkVersionString[];
 #import "SnquIMEasemobLoginManager.h"
 
 
-#import "SnquIMEasemobConversationManager.h"
-#import "SnquIMEasemobConversation.h"
+#import "SnquIMEasemobFriendManager.h"
+
+
+#import "SnquIMEasemobChatManager.h"
 

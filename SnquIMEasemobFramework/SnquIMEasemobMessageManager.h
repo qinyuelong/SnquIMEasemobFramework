@@ -11,7 +11,17 @@
 
 @interface SnquIMEasemobMessageManager : NSObject
 
+
+/**
+ 用户 b id
+ */
+@property (nonatomic, strong) NSString *conversationId;
+
+-(instancetype)initWithConversationId:(NSString *)conversationId;
+
 -(EMMessage *)convertMessageTextToEMMessage:(NSString *)messageText;
+
+-(EMMessage *)convertImageMessageToEMMessage:(NSData *)imageData displayName:(NSString *)displayName;
 
 
 @end

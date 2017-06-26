@@ -32,7 +32,10 @@
 
 - (void)getContactsFromServerWithCompletionBlock:(void (^)(NSArray *aList, NSError *error))completionBlock{
     [[EMClient sharedClient].contactManager getContactsFromServerWithCompletion:^(NSArray *aList, EMError *aError) {
-        
+        if (completionBlock) {
+            NSError *error = [SnquIMEasemobUtils convertEMErrorToNSError:aError];
+            completionBlock(aList, error);
+        }
     }];
 }
 
