@@ -470,7 +470,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 526E240463EC99929ED56B87 /* Pods-SnquIMEasemobFramework.debug.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					"$(ARCHS_STANDARD)",
+				);
 				CODE_SIGN_IDENTITY = "";
+				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -481,6 +486,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snqu.SnquIMEasemobFramework;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -492,7 +498,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 21D79C6240A8D67298761B20 /* Pods-SnquIMEasemobFramework.release.xcconfig */;
 			buildSettings = {
+				ARCHS = (
+					armv7s,
+					"$(ARCHS_STANDARD)",
+				);
 				CODE_SIGN_IDENTITY = "";
+				DEAD_CODE_STRIPPING = NO;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -503,6 +514,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.snqu.SnquIMEasemobFramework;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
