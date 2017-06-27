@@ -113,8 +113,8 @@
 
 
 - (void)messagesDidReceive:(NSArray<SnquIMEasemobMessage *> *)aMessages{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(messagesDidReceive:)]) {
-        [self.delegate messagesDidReceive:aMessages];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMEasemobMessagesDidReceive:)]) {
+        [self.delegate snquIMEasemobMessagesDidReceive:aMessages];
     }
 }
 
@@ -122,22 +122,22 @@
 
 
 - (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(cmdMessagesDidReceive:)]) {
-        [self.delegate cmdMessagesDidReceive:aCmdMessages];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMEasemobCmdMessagesDidReceive:)]) {
+        [self.delegate snquIMEasemobCmdMessagesDidReceive:aCmdMessages];
     }
 }
 
 // 消息已送达回执
 -(void)messagesDidDeliver:(NSArray<SnquIMEasemobMessage *> *)aMessages{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(cmdMessagesDidReceive:)]) {
-        [self.delegate messagesDidDeliver:aMessages];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMEasemobMessagesDidDeliver:)]) {
+        [self.delegate snquIMEasemobMessagesDidDeliver:aMessages];
     }
 }
 
 // 接收已读回执
 -(void)messagesDidRead:(NSArray<SnquIMEasemobMessage *> *)aMessages{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(messagesDidRead:)]) {
-        [self.delegate messagesDidRead:aMessages];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMEasemobMessagesDidRead:)]) {
+        [self.delegate snquIMEasemobMessagesDidRead:aMessages];
     }
 }
 

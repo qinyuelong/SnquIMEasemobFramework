@@ -59,20 +59,20 @@
  @endcode
  
  */
-- (void)messagesDidReceive:(NSArray<SnquIMEasemobMessage *> *)aMessages;
+- (void)snquIMEasemobMessagesDidReceive:(NSArray<SnquIMEasemobMessage *> *)aMessages;
 
 // 透传(cmd)在线消息会走以下回调:
 /*!
  @method
  @brief 接收到一条及以上cmd消息
  */
-- (void)cmdMessagesDidReceive:(NSArray *)aCmdMessages;
+- (void)snquIMEasemobCmdMessagesDidReceive:(NSArray *)aCmdMessages;
 
 // 消息已送达回执
--(void)messagesDidDeliver:(NSArray<SnquIMEasemobMessage *> *)aMessages;
+-(void)snquIMEasemobMessagesDidDeliver:(NSArray<SnquIMEasemobMessage *> *)aMessages;
 
 // 接收已读回执
--(void)messagesDidRead:(NSArray<SnquIMEasemobMessage *> *)aMessages;
+-(void)snquIMEasemobMessagesDidRead:(NSArray<SnquIMEasemobMessage *> *)aMessages;
 
 @end
 
