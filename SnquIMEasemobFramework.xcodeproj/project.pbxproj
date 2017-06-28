@@ -14,7 +14,7 @@
 				18E3BADA1EFB9B1C00B25BEC /* ShellScript */,
 			);
 			dependencies = (
-				18E3BADC1EFB9B9C00B25BEC /* PBXTargetDependency */,
+				18A032B41F037D6D0019F387 /* PBXTargetDependency */,
 			);
 			name = Framework;
 			productName = Framework;
@@ -43,7 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		18E3BADB1EFB9B9C00B25BEC /* PBXContainerItemProxy */ = {
+		18A032B31F037D6D0019F387 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 18E3BAC21EFB98C800B25BEC /* Project object */;
 			proxyType = 1;
@@ -298,7 +298,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		18E3BADA1EFB9B1C00B25BEC /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -307,7 +307,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Constants\nSF_TARGET_NAME=${PROJECT_NAME}\n#自定义的用来存放最后合并的framework\nUNIVERSAL_OUTPUTFOLDER=${BUILD_DIR}/${CONFIGURATION}-universal\n#IPHONE_DEVICE_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos\nWORKSPACE_NAME=${PROJECT_NAME}.xcworkspace\nYO_SCHEME=${PROJECT_NAME}\n#clean build是先清除原来的build\nxcodebuild -workspace ${WORKSPACE_NAME} -scheme ${YO_SCHEME} -sdk iphonesimulator -configuration\"${CONFIGURATION}\"clean build\nxcodebuild -workspace ${WORKSPACE_NAME} -scheme ${YO_SCHEME} -sdk iphoneos -configuration\"${CONFIGURATION}\"clean build\n# build project\n#xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk iphoneos BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" CONFIGURATION_BUILD_DIR=\"${IPHONE_DEVICE_BUILD_DIR}/arm64\" SYMROOT=\"${SYMROOT}\" ARCHS='arm64' VALID_ARCHS='arm64' $ACTION\n#xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk iphoneos BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\"  CONFIGURATION_BUILD_DIR=\"${IPHONE_DEVICE_BUILD_DIR}/armv7\" SYMROOT=\"${SYMROOT}\" ARCHS='armv7 armv7s' VALID_ARCHS='armv7 armv7s' $ACTION\n# Copy the framework structure to the universal folder (clean it first)\n#因为framework的合并,lipo只是合并了最后的二进制可执行文件,所以其它的需要我们自己复制过来\n#先移除原来的\nrm -rf \"${UNIVERSAL_OUTPUTFOLDER}\"\nmkdir -p \"${UNIVERSAL_OUTPUTFOLDER}\"\ncp -R \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework\" \"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework\"\n#合并模拟器和真机的架构\nlipo -create  \"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework/${PROJECT_NAME}\"-output\"${UNIVERSAL_OUTPUTFOLDER}/${PROJECT_NAME}.framework/${PROJECT_NAME}\"\nopen \"${UNIVERSAL_OUTPUTFOLDER}\"";
+			shellScript = "# Sets the target folders and the final framework product.\n# 如果工程名称和Framework的Target名称不一样的话，要自定义FMKNAME\n# 例如: FMK_NAME = \"MyFramework\"\n  FMK_NAME=${PROJECT_NAME}\n# Install dir will be the final output tothe framework.\n# The following line create it in the root folder of the current project.\nINSTALL_DIR=${SRCROOT}/Products/${FMK_NAME}.framework\n# Working dir will be deleted after the framework creation.\nWRK_DIR=build\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos/${FMK_NAME}.framework\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator/${FMK_NAME}.framework\n# -configuration ${CONFIGURATION}\n# Clean and Building both architectures.\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos clean build\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator clean build\n# Cleaning the oldest.\nif [ -d \"${INSTALL_DIR}\" ]\nthen\nrm -rf \"${INSTALL_DIR}\"\nfi\nmkdir -p \"${INSTALL_DIR}\"\ncp -R \"${DEVICE_DIR}/\" \"${INSTALL_DIR}/\"\n# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.\nlipo -create \"${DEVICE_DIR}/${FMK_NAME}\" \"${SIMULATOR_DIR}/${FMK_NAME}\" -output \"${INSTALL_DIR}/${FMK_NAME}\"\nrm -r \"${WRK_DIR}\"\nopen \"${INSTALL_DIR}\"";
 		};
 		2A3D054A065DC5D1537677C9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -360,10 +360,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		18E3BADC1EFB9B9C00B25BEC /* PBXTargetDependency */ = {
+		18A032B41F037D6D0019F387 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 18E3BACA1EFB98C800B25BEC /* SnquIMEasemobFramework */;
-			targetProxy = 18E3BADB1EFB9B9C00B25BEC /* PBXContainerItemProxy */;
+			targetProxy = 18A032B31F037D6D0019F387 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -525,6 +525,13 @@
 		18E3BAD71EFB9B0100B25BEC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -532,6 +539,13 @@
 		18E3BAD81EFB9B0100B25BEC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
