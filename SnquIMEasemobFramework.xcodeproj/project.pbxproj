@@ -23,12 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		0E0F7EDEB5A18C811605C14D /* libPods-SnquIMEasemobFramework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A31D249E35EFA18B8D9FC630 /* libPods-SnquIMEasemobFramework.a */; };
-		1852CB101F00D86F00B6107F /* SnquIMEasemobMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 1852CB0E1F00D86F00B6107F /* SnquIMEasemobMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1852CB111F00D86F00B6107F /* SnquIMEasemobMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1852CB0F1F00D86F00B6107F /* SnquIMEasemobMessage.m */; };
 		189913211EFCC884004A4C74 /* SnquIMEasemobMessageManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 1899131F1EFCC884004A4C74 /* SnquIMEasemobMessageManager.h */; };
 		189913221EFCC884004A4C74 /* SnquIMEasemobMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 189913201EFCC884004A4C74 /* SnquIMEasemobMessageManager.m */; };
-		1899135C1EFCF942004A4C74 /* SnquIMEasemobConversation.h in Headers */ = {isa = PBXBuildFile; fileRef = 1899135A1EFCF942004A4C74 /* SnquIMEasemobConversation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1899135D1EFCF942004A4C74 /* SnquIMEasemobConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1899135B1EFCF942004A4C74 /* SnquIMEasemobConversation.m */; };
 		189913621EFD1853004A4C74 /* SnquIMEasemobChatManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 189913601EFD1853004A4C74 /* SnquIMEasemobChatManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		189913631EFD1853004A4C74 /* SnquIMEasemobChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 189913611EFD1853004A4C74 /* SnquIMEasemobChatManager.m */; };
 		18E3BAD01EFB98C800B25BEC /* SnquIMEasemobFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 18E3BACE1EFB98C800B25BEC /* SnquIMEasemobFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -53,12 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1852CB0E1F00D86F00B6107F /* SnquIMEasemobMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnquIMEasemobMessage.h; sourceTree = "<group>"; };
-		1852CB0F1F00D86F00B6107F /* SnquIMEasemobMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnquIMEasemobMessage.m; sourceTree = "<group>"; };
 		1899131F1EFCC884004A4C74 /* SnquIMEasemobMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnquIMEasemobMessageManager.h; sourceTree = "<group>"; };
 		189913201EFCC884004A4C74 /* SnquIMEasemobMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnquIMEasemobMessageManager.m; sourceTree = "<group>"; };
-		1899135A1EFCF942004A4C74 /* SnquIMEasemobConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnquIMEasemobConversation.h; sourceTree = "<group>"; };
-		1899135B1EFCF942004A4C74 /* SnquIMEasemobConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnquIMEasemobConversation.m; sourceTree = "<group>"; };
 		189913601EFD1853004A4C74 /* SnquIMEasemobChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnquIMEasemobChatManager.h; sourceTree = "<group>"; };
 		189913611EFD1853004A4C74 /* SnquIMEasemobChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SnquIMEasemobChatManager.m; sourceTree = "<group>"; };
 		18E3BACB1EFB98C800B25BEC /* SnquIMEasemobFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SnquIMEasemobFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -93,8 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				18E3BADF1EFB9CBF00B25BEC /* Message */,
-				1899135A1EFCF942004A4C74 /* SnquIMEasemobConversation.h */,
-				1899135B1EFCF942004A4C74 /* SnquIMEasemobConversation.m */,
 				189913601EFD1853004A4C74 /* SnquIMEasemobChatManager.h */,
 				189913611EFD1853004A4C74 /* SnquIMEasemobChatManager.m */,
 			);
@@ -155,8 +145,6 @@
 			children = (
 				1899131F1EFCC884004A4C74 /* SnquIMEasemobMessageManager.h */,
 				189913201EFCC884004A4C74 /* SnquIMEasemobMessageManager.m */,
-				1852CB0E1F00D86F00B6107F /* SnquIMEasemobMessage.h */,
-				1852CB0F1F00D86F00B6107F /* SnquIMEasemobMessage.m */,
 			);
 			name = Message;
 			sourceTree = "<group>";
@@ -215,8 +203,6 @@
 				18E3BAF11EFBC96100B25BEC /* SnquIMEasemobUtils.h in Headers */,
 				18E3BAE21EFB9CCC00B25BEC /* SnquIMEasemobManager.h in Headers */,
 				18E3BAE61EFB9CED00B25BEC /* SnquIMEasemobLoginManager.h in Headers */,
-				1899135C1EFCF942004A4C74 /* SnquIMEasemobConversation.h in Headers */,
-				1852CB101F00D86F00B6107F /* SnquIMEasemobMessage.h in Headers */,
 				189913621EFD1853004A4C74 /* SnquIMEasemobChatManager.h in Headers */,
 				18E3BAEC1EFBBFE000B25BEC /* SnquIMEasemobFriendManager.h in Headers */,
 				189913211EFCC884004A4C74 /* SnquIMEasemobMessageManager.h in Headers */,
@@ -346,14 +332,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1899135D1EFCF942004A4C74 /* SnquIMEasemobConversation.m in Sources */,
 				189913631EFD1853004A4C74 /* SnquIMEasemobChatManager.m in Sources */,
 				189913221EFCC884004A4C74 /* SnquIMEasemobMessageManager.m in Sources */,
 				18E3BAED1EFBBFE000B25BEC /* SnquIMEasemobFriendManager.m in Sources */,
 				18E3BAF21EFBC96100B25BEC /* SnquIMEasemobUtils.m in Sources */,
 				18E3BAE31EFB9CCC00B25BEC /* SnquIMEasemobManager.m in Sources */,
 				18E3BAE71EFB9CED00B25BEC /* SnquIMEasemobLoginManager.m in Sources */,
-				1852CB111F00D86F00B6107F /* SnquIMEasemobMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

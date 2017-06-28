@@ -6,8 +6,7 @@
 //  Copyright © 2017年 apple. All rights reserved.
 //
 
-#import "SnquIMEasemobConversation.h"
-#import "SnquIMEasemobMessage.h"
+#import <HyphenateLite/HyphenateLite.h>
 
 @protocol SnquIMEasemobChatManagerDelegate <NSObject>
 
@@ -59,7 +58,15 @@
  @endcode
  
  */
-- (void)snquIMEasemobMessagesDidReceive:(NSArray<SnquIMEasemobMessage *> *)aMessages;
+- (void)snquIMEasemobMessagesDidReceive:(NSArray<EMMessage *> *)aMessages;
+
+
+/**
+ 会话列表更新
+
+ @param aConversationList 会话列表集合
+ */
+-(void)snquIMeasemobConversationListDidUpdate:(NSArray<EMConversation *> *)aConversationList;
 
 // 透传(cmd)在线消息会走以下回调:
 /*!
@@ -69,10 +76,10 @@
 - (void)snquIMEasemobCmdMessagesDidReceive:(NSArray *)aCmdMessages;
 
 // 消息已送达回执
--(void)snquIMEasemobMessagesDidDeliver:(NSArray<SnquIMEasemobMessage *> *)aMessages;
+-(void)snquIMEasemobMessagesDidDeliver:(NSArray<EMMessage *> *)aMessages;
 
 // 接收已读回执
--(void)snquIMEasemobMessagesDidRead:(NSArray<SnquIMEasemobMessage *> *)aMessages;
+-(void)snquIMEasemobMessagesDidRead:(NSArray<EMMessage *> *)aMessages;
 
 @end
 
@@ -85,13 +92,14 @@
 @property (nonatomic, weak) id<SnquIMEasemobChatManagerDelegate> delegate;
 
 
+
 /**
- 初始化并自动 注册消息回调
- 
- @param conversationId 用户 B id
- @return instance
+ 实例化
+
+ @return 实例对象
  */
--(instancetype)initWithConversationId:(NSString *)conversationId;
++(instancetype)defaultInstance;
+
 
 /**
  //移除消息回调
@@ -107,7 +115,7 @@
  @param userId 用户 b userId
  @return 会话对象
  */
--(SnquIMEasemobConversation *)getConversationWithUser:(NSString *)userId;
+-(EMConversation *)getConversationWithUser:(NSString *)userId;
 
 
 /**
@@ -124,7 +132,7 @@
  @param conversation 会话
  @return 未读消息数
  */
--(int)unReadMessageWithConversation:(SnquIMEasemobConversation *) conversation;
+-(int)unReadMessageWithConversation:(EMConversation *) conversation;
 
 /**
  删除会话
@@ -158,7 +166,7 @@
  @param completionBlock 完成的回调
  */
 -(void)sendTextMessage:(NSString *)messageText progress:(void (^)(int progress))aProgressBlock
-            completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock;
+            completion:(void (^)(EMMessage *message, NSError *error))completionBlock;
 
 
 
@@ -171,7 +179,7 @@
  @param completionBlock 完成的回调
  */
 -(void)sendImageMessage:(NSData *)imageData imageName:(NSString *)imageName progress:(void (^)(int progress))aProgressBlock
-            completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock;
+            completion:(void (^)(EMMessage *message, NSError *error))completionBlock;
 
 /**
  发送消息已读回执
@@ -179,7 +187,7 @@
  @param message 消息对象
  @param completionBlock 完成的回调
  */
--(void)sendMessageReadAck:(SnquIMEasemobMessage *)message completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock;
+-(void)sendMessageReadAck:(EMMessage *)message completion:(void (^)(EMMessage *message, NSError *error))completionBlock;
 
 
 @end

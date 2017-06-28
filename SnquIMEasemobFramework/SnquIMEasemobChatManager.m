@@ -7,7 +7,6 @@
 //
 
 #import "SnquIMEasemobChatManager.h"
-#import <HyphenateLite/HyphenateLite.h>
 #import "SnquIMEasemobUtils.h"
 #import "SnquIMEasemobMessageManager.h"
 
@@ -20,11 +19,20 @@
 
 @implementation SnquIMEasemobChatManager
 
++(instancetype)defaultInstance{
+    static SnquIMEasemobChatManager *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[SnquIMEasemobChatManager alloc] init];
+        [[EMClient sharedClient].chatManager addDelegate:instance delegateQueue:nil];
+    });
+    return instance;
+}
 
 -(instancetype)initWithConversationId:(NSString *)conversationId{
     self = [super init];
     if (self) {
-        [[EMClient sharedClient].chatManager addDelegate:self delegateQueue:nil];
+        
         [self getConversationWithUser:conversationId];
         self.messageManager = [[SnquIMEasemobMessageManager alloc] initWithConversationId:conversationId];
     }
@@ -32,13 +40,12 @@
 }
 
 
-
 -(void)removeDelegate{
     [[EMClient sharedClient].chatManager removeDelegate:self];
 }
 
--(SnquIMEasemobConversation *)getConversationWithUser:(NSString *)userId{
-    SnquIMEasemobConversation  *converstation = (SnquIMEasemobConversation *)[[EMClient sharedClient].chatManager getConversation:userId type:EMConversationTypeChat createIfNotExist:YES];
+-(EMConversation *)getConversationWithUser:(NSString *)userId{
+    EMConversation  *converstation = [[EMClient sharedClient].chatManager getConversation:userId type:EMConversationTypeChat createIfNotExist:YES];
     [converstation unreadMessagesCount];
     return converstation;
 }
@@ -68,40 +75,40 @@
     return conversations;
 }
 
--(int)unReadMessageWithConversation:(SnquIMEasemobConversation *) conversation{
+-(int)unReadMessageWithConversation:(EMConversation *) conversation{
     return [conversation unreadMessagesCount];
 }
 
 
 
 -(void)sendTextMessage:(NSString *)messageText progress:(void (^)(int progress))aProgressBlock
-            completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock{
+            completion:(void (^)(EMMessage *message, NSError *error))completionBlock{
     
     EMMessage *message = [self.messageManager convertMessageTextToEMMessage:messageText];
     [[EMClient sharedClient].chatManager sendMessage:message progress:aProgressBlock completion:^(EMMessage *message, EMError *error) {
         if (completionBlock) {
             NSError *e = [SnquIMEasemobUtils convertEMErrorToNSError:error];
-            completionBlock((SnquIMEasemobMessage *)message, e);
+            completionBlock(message, e);
         }
     }];
 }
 
 -(void)sendImageMessage:(NSData *)imageData imageName:(NSString *)imageName progress:(void (^)(int progress))aProgressBlock
-             completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock{
+             completion:(void (^)(EMMessage *message, NSError *error))completionBlock{
     EMMessage *message = [self.messageManager convertImageMessageToEMMessage:imageData displayName:imageName];
     [[EMClient sharedClient].chatManager sendMessage:message progress:aProgressBlock completion:^(EMMessage *message, EMError *error) {
         if (completionBlock) {
             NSError *e = [SnquIMEasemobUtils convertEMErrorToNSError:error];
-            completionBlock((SnquIMEasemobMessage *)message, e);
+            completionBlock(message, e);
         }
     }];
 }
 
--(void)sendMessageReadAck:(SnquIMEasemobMessage *)message completion:(void (^)(SnquIMEasemobMessage *message, NSError *error))completionBlock{
+-(void)sendMessageReadAck:(EMMessage *)message completion:(void (^)(EMMessage *message, NSError *error))completionBlock{
     [[EMClient sharedClient].chatManager sendMessageReadAck:message completion:^(EMMessage *aMessage, EMError *aError) {
         if (completionBlock) {
             NSError *error = [SnquIMEasemobUtils convertEMErrorToNSError:aError];
-            completionBlock((SnquIMEasemobMessage *)aMessage, error);
+            completionBlock(aMessage, error);
         }
     }];
 }
@@ -111,8 +118,14 @@
 
 // 在线普通消息会走以下回调：
 
+- (void)conversationListDidUpdate:(NSArray *)aConversationList{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMeasemobConversationListDidUpdate:)]) {
+        [self.delegate snquIMeasemobConversationListDidUpdate:aConversationList];
+    }
+}
 
-- (void)messagesDidReceive:(NSArray<SnquIMEasemobMessage *> *)aMessages{
+
+- (void)messagesDidReceive:(NSArray<EMMessage *> *)aMessages{
     if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMEasemobMessagesDidReceive:)]) {
         [self.delegate snquIMEasemobMessagesDidReceive:aMessages];
     }
@@ -128,14 +141,14 @@
 }
 
 // 消息已送达回执
--(void)messagesDidDeliver:(NSArray<SnquIMEasemobMessage *> *)aMessages{
+-(void)messagesDidDeliver:(NSArray<EMMessage *> *)aMessages{
     if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMEasemobMessagesDidDeliver:)]) {
         [self.delegate snquIMEasemobMessagesDidDeliver:aMessages];
     }
 }
 
 // 接收已读回执
--(void)messagesDidRead:(NSArray<SnquIMEasemobMessage *> *)aMessages{
+-(void)messagesDidRead:(NSArray<EMMessage *> *)aMessages{
     if (self.delegate && [self.delegate respondsToSelector:@selector(snquIMEasemobMessagesDidRead:)]) {
         [self.delegate snquIMEasemobMessagesDidRead:aMessages];
     }

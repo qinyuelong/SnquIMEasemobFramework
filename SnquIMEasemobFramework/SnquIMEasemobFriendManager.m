@@ -16,12 +16,19 @@
 
 @implementation SnquIMEasemobFriendManager
 
-- (instancetype)init{
-    self = [super init];
-    if (self) {
-        [[EMClient sharedClient].contactManager addDelegate:self delegateQueue:nil];
-    }
-    return self;
+
++(instancetype)defaultInstance{
+    static SnquIMEasemobFriendManager *instance;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[SnquIMEasemobFriendManager alloc] init];
+        [[EMClient sharedClient].contactManager addDelegate:instance delegateQueue:nil];
+    });
+    return instance;
+}
+
+-(void)removeDelegate{
+    [[EMClient sharedClient].contactManager removeDelegate:self];
 }
 
 - (NSArray *)getContactsFromServer{
@@ -133,18 +140,21 @@
 #pragma mark - EMContactManagerDelegate
 
 - (void)friendRequestDidReceiveFromUser:(NSString *)userId message:(NSString *)aMessage{
+    NSLog(@" -------  %s", __FUNCTION__);
     if (self.delegate) {
         [self.delegate friendRequestDidReceiveFromUser:userId message:aMessage];
     }
 }
 
 - (void)friendRequestDidApproveByUser:(NSString *)userId{
+    NSLog(@" -------  %s", __FUNCTION__);
     if (self.delegate) {
         [self.delegate friendRequestDidApproveByUser:userId];
     }
 }
 
 - (void)friendRequestDidDeclineByUser:(NSString *)userId{
+    NSLog(@" -------  %s", __FUNCTION__);
     if (self.delegate) {
         [self.delegate friendRequestDidDeclineByUser:userId];
     }

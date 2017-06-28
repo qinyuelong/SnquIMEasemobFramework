@@ -44,6 +44,10 @@
 
 @property(nonatomic, weak) id<SnquIMEasemobFriendManagerDelegate> delegate;
 
++(instancetype)defaultInstance;
+
+-(void)removeDelegate;
+
 #pragma mark - 获取好友
 
 /**
